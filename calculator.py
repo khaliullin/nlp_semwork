@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 
-def count_incoming_word(words, dictonary):
+def count_incoming_word(words, dictionary):
     count = 0
     for word in words:
-        if word in dictonary:
+        if word in dictionary:
             count += 1
     return count
 
