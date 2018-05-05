@@ -44,10 +44,7 @@ def pmi(unigram_freq, bigram_freq):
     pmi_dict = dict()
     for key in bi_freq.keys():
         word1 = key[0]
-        print(word1)
         word2 = key[1]
-        print(word2)
-        print('\n')
         prob_word1 = unigram_freq[word1] / float(sum(unigram_freq.values())) + ebs
         prob_word2 = unigram_freq[word2] / float(sum(unigram_freq.values())) + ebs
         prob_word1_word2 = bigram_freq[(word1, word2)] / float(sum(bigram_freq.values())) + ebs
