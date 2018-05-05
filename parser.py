@@ -2,42 +2,47 @@ import csv
 import glob
 import os
 
-
-def read_csv(filename):
-    """
-    Возвращает словарь {'title':, 'text':}
-    """
-    is_positive = filename[-5] == '1'
-    reader = csv.reader(open(filename, newline='\n'), delimiter='\n')
-    review_list = list(reader)
-    review_dict = {'title': review_list[0][0],
-                   'text': ' '.join(str(review) for paragraph in review_list[1:] for review in paragraph),
-                   'positive': is_positive}
-    return review_dict
+CORPUS = 'new_corpus'
 
 
-def read_corpus(corpus, direction_name='', limit=-2):
+def read_csv(filename, limit=None):
     """
-    :param corpus: Строка с названием папки корпуса
-    :param direction_name: Конкретная папка с отзывами (прим. Больницы)
-    :param limit: Количество читаемых файлов из корпуса
-    :return: Пока ничего не возвращает
+    Возвращает словарь {'title', 'text', 'positive'}
     """
-    list_dicts = []
+    reviews_list = []
+    reader = csv.reader(open(filename, newline='\n'), delimiter='\t', quotechar='|')
+    for record in list(reader)[:limit]:
+        reviews_list.append({'title': record[0], 'text': record[1], 'positive': record[2] == '1'})
+    return reviews_list
+
+
+def read_corpus(corpus, direction_name='', limit=None):
+    """
+    :param corpus: Строка с названием папки корпуса (Обязательный параметр)
+    :param direction_name: Конкретный файл с отзывами (прим. 'Больницы')
+    :param limit: Количество читаемых отзывов из файлов
+    :return: Список со словарями отзывов
+    """
+    reviews_list = []
     if direction_name:
-        folder = os.path.join(corpus, direction_name)
-        for review in os.listdir(folder)[:limit]:
-            list_dicts.append(read_csv(os.path.join(corpus, direction_name, review)))
+        filename = os.path.join(corpus, direction_name + '.csv')
+        return read_csv(filename, limit)
     else:
         folder = os.listdir(corpus)
-        for direction in folder:
-            if not direction.startswith("."):
-                for review in os.listdir(os.path.join(corpus, direction))[:limit]:
-                    list_dicts.append(read_csv(os.path.join(corpus, direction, review)))
-    return list_dicts
+        for file in folder:
+            if not file.startswith("."):
+                filename = os.path.join(corpus, file)
+                reviews_list.extend(read_csv(filename, limit))
+        return reviews_list
 
 
 if __name__ == '__main__':
-    corpus = 'corpus'
-    l = read_corpus(corpus, direction_name='Аптеки', limit=40)
-    print(l)
+    # Примеры использования
+    l1 = read_corpus(CORPUS, limit=1)   # один отзыв из каждого направления
+    l_all = read_corpus(CORPUS)    # читает весь корпус
+    l_file = read_csv('new_corpus/Аптеки.csv')      # читает файл целиком
+    l_file10 = read_csv('new_corpus/Аптеки.csv', 10)      # читает 10 отзывов из одного файла
+
+    print(l1)
+    print(l_file)
+    print(l_file10)
