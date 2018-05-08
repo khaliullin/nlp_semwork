@@ -20,8 +20,22 @@ def main():
     print('Всего слов: %s' % words)
 
     # Считается довольно долго
-    unique = st.unique_words(l1)
-    print('Уникальных слов: %s' % unique)
+    # unique = st.unique_words(l1)
+    # print('Уникальных слов: %s' % unique)
+
+    print('Негативных: %s\nПозитивных: %s' % st.negative_positive(l1))
+
+    divided_reviews = parser.divide_by_category(CORPUS)
+    n_p_category = st.negative_positive_by_category(divided_reviews)
+    print('По категроиям (негативные, поитивные): ')
+    print(n_p_category)
+
+    top_negative = st.top_negative(divided_reviews, count=3)
+    print(top_negative)
+
+    top_positive = st.top_positive(divided_reviews, count=3)
+    print(top_positive)
+
 
 
     # words = get_tokens_for_use('corpus/Аптеки/1_1_1.csv', 'russian')

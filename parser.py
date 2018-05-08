@@ -36,6 +36,21 @@ class Parser:
                     reviews_list.extend(self.read_csv(filename, limit))
             return reviews_list
 
+    def divide_by_category(self, corpus, limit=None):
+        """
+        This method separates the list on sublist by direction
+        :param corpus: Строка с названием папки корпуса (Обязательный параметр)
+        :param limit: Количество читаемых отзывов из файлов
+        :return: Список со списками со словарями отзывов
+        """
+        reviews_list = []
+        folder = os.listdir(corpus)
+        for file in folder:
+            if not file.startswith("."):
+                filename = os.path.join(corpus, file)
+                reviews_list.append([file, self.read_csv(filename, limit)])
+        return reviews_list
+
 
 if __name__ == '__main__':
     parser = Parser()
