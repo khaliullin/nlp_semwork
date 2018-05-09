@@ -1,6 +1,9 @@
 import csv
 import glob
 import os
+import sys
+
+csv.field_size_limit(sys.maxsize)
 
 CORPUS = 'new_corpus'
 
