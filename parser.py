@@ -61,7 +61,7 @@ if __name__ == '__main__':
     l1 = parser.read_corpus(CORPUS, limit=1)   # один отзыв из каждого направления
     l_all = parser.read_corpus(CORPUS)    # читает весь корпус
     l_file = parser.read_csv('new_corpus/Аптеки.csv')      # читает файл целиком
-    l_file10 = parser.read_csv('new_corpus/Аптеки.csv', 10)      # читает 10 отзывов из одного файла
+    l_file10 = parser.read_csv('new_corpus/Аптеки.csv', limit=10)      # читает 10 отзывов из одного файла
 
     print(l1)
     print(l_file)
