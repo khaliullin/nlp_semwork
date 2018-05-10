@@ -13,7 +13,8 @@ from parser import Parser
 
 class Classifier:
 
-    def get_bayes_result(self, docs):
+    @staticmethod
+    def get_bayes_result(docs):
         twenty_train, twenty_test, target_train, target_test = train_test_split(docs['text'], docs['target'],
                                                                                 test_size=0.2,
                                                                                 random_state=len(docs))
@@ -26,7 +27,8 @@ class Classifier:
         predicted = text_clf.predict(twenty_test)
         return np.mean(predicted == target_test)
 
-    def get_svm_result(self, docs):
+    @staticmethod
+    def get_svm_result(docs):
         twenty_train, twenty_test, target_train, target_test = train_test_split(docs['text'], docs['target'],
                                                                                 test_size=0.2,
                                                                                 random_state=1)
@@ -39,7 +41,8 @@ class Classifier:
         predicted = text_clf.predict(twenty_test)
         return np.mean(predicted == target_test)
 
-    def get_regression_result(self, docs):
+    @staticmethod
+    def get_regression_result(docs):
         twenty_train, twenty_test, target_train, target_test = train_test_split(docs['text'], docs['target'],
                                                                                 test_size=0.2,
                                                                                 random_state=len(docs))
@@ -52,7 +55,8 @@ class Classifier:
         predicted = text_clf.predict(twenty_test)
         return np.mean(predicted == target_test)
 
-    def get_lgbm_result(self, docs):
+    @staticmethod
+    def get_lgbm_result(docs):
         twenty_train, twenty_test, target_train, target_test = train_test_split(docs['text'], docs['target'],
                                                                                 test_size=0.2,
                                                                                 random_state=len(docs))
@@ -65,7 +69,8 @@ class Classifier:
         predicted = text_clf.predict(twenty_test)
         return np.mean(predicted == target_test)
 
-    def get_data(self, docs):
+    @staticmethod
+    def get_data(docs):
         result = dict()
         text = []
         target = []
