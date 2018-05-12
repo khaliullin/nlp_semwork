@@ -28,9 +28,7 @@ def remove_stopwords(tokens, lang):
 def stem(tokens, lang):
     if languages.__contains__(lang):
         snowball = SnowballStemmer(lang)
-        stemmed = []
-        for word in tokens:
-            stemmed.append(snowball.stem(word))
+        stemmed = [snowball.stem(word) for word in tokens]
         return stemmed
     return tokens
 
