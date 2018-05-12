@@ -1,8 +1,5 @@
-import calculator
-from dictonary_reader import get_words
 from parser import Parser
 from stats import StatsCounter
-from tokenizer import get_tokens_for_use
 
 CORPUS = 'new_corpus'
 
