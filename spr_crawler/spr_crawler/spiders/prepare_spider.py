@@ -18,10 +18,7 @@ class QuotesSpider(scrapy.Spider):
             for line in inst:
                 i += 1
                 self.institutions.append(line.strip())
-                # if i == 15:
-                #     break
 
-        print("========================================================================")
         print(self.institutions)
 
         f = open(self.filename, 'w')
@@ -57,7 +54,6 @@ class QuotesSpider(scrapy.Spider):
         file = response.meta['file']
 
         # searching urls in page html
-        # print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         m = re.search("next11\(\d+.+,11\);'", html)
         inst_id_net = 0
         if m:
@@ -145,7 +141,6 @@ class QuotesSpider(scrapy.Spider):
                     else:
                         urls.extend(self.generate_url(2, inst_id_net, 20, "1"))
 
-        # with open('/Users/sagithaliullin/student/gitHub/nlp_semwork/crawler/tutorial/urls1.txt', 'a+') as f:
         for url in urls:
             file.write(url + '\n')
 
@@ -158,9 +153,7 @@ class QuotesSpider(scrapy.Spider):
         f.close()
 
         urls = re.findall('www.spr.ru/forum_vyvod.php\?id_tema=\d+\\\\', html)
-        print('====================================================================================================')
-        print(urls)
-
+        # print(urls)
 
     def parse(self, response):
         pass
