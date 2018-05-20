@@ -9,7 +9,7 @@ class QuotesSpider(scrapy.Spider):
     """
     name = "direction"
     filename = "institutions.txt"
-    direction = "https://www.spr.ru/all/dispanseri-onkologicheskie/"
+    direction = "https://www.spr.ru/all/medtsentri/"
 
     def start_requests(self):
         f = open(self.filename, 'w')

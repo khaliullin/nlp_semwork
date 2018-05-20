@@ -1,6 +1,8 @@
 import argparse
 
 # Инициализируем аргументы командной строки
+from parser import Parser
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--src-train-texts', type=str, default="/new_corpus", required=False,
                     help="Путь к корпусу, обязательный аргумент")
@@ -23,4 +25,3 @@ args = parser.parse_args()
 
 
 # Вызываем функции для выполнения задачи
-

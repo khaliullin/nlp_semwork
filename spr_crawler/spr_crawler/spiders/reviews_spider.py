@@ -4,13 +4,14 @@ import re
 
 import scrapy
 from bs4 import BeautifulSoup
+from scrapy import Request
 
 
 class QuotesSpider(scrapy.Spider):
     name = "reviews"
     filename = "urls.txt"
     output_path = "corpus"
-    dir_name = "Диспансеры онкологические"
+    dir_name = "Медцентры1"
 
     pages = []
 
@@ -22,18 +23,22 @@ class QuotesSpider(scrapy.Spider):
             url = line.strip()
             print(url)
 
-            request = scrapy.Request(url=url, callback=self.get_reviews_urls)
+            request = scrapy.Request(url=url, callback=self.get_reviews_urls, errback=self.make_new_request)
             yield request
 
     def get_reviews_urls(self, response):
         html = response.body.decode('windows-1251')
 
+        if len(html) == 0:
+            return AttributeError
+
         urls = re.findall('www.spr.ru/forum_vyvod.php\?id_tema=\d+\\\\', html)
         # print('==============================================================================')
+
         for url in urls:
             url = 'https://' + url[:-1]
             # print(url)
-            yield scrapy.Request(url=url, callback=self.parse)
+            yield scrapy.Request(url=url, callback=self.parse, errback=self.make_new_request)
 
     def find_between(self, s, first, last):
         try:
@@ -45,6 +50,7 @@ class QuotesSpider(scrapy.Spider):
 
     def parse(self, response):
         html = response.body.decode('windows-1251')
+
         page = response.url.split("=")[-1]
 
         positive = "1" if re.search("title='Это положительный отзыв'><span>", html) else "0"
@@ -67,5 +73,9 @@ class QuotesSpider(scrapy.Spider):
             spamwriter.writerow([title])
             spamwriter.writerow([text])
             spamwriter.writerow([date])
+
+    def make_new_request(self, failure):
+        return scrapy.Request(url=failure.request.url, callback=self.get_reviews_urls, errback=self.make_new_request,
+                              dont_filter=True)
 
 
