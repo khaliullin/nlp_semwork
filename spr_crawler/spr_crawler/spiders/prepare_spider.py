@@ -7,17 +7,14 @@ class QuotesSpider(scrapy.Spider):
     name = "institution"
     filename = "urls.txt"
 
-    institutions = [
-        # "https://www.spr.ru/otzyvy/dentos-lyuks-5252215.html",
-        # "https://www.spr.ru/otzyvy/nauchno-klinicheskiy-tsentr-otorinolaringologii-fmba-rossii-246413.html",
-    ]
+    institutions = set()
 
     def start_requests(self):
         with open('institutions.txt', 'r') as inst:
             i = 0
             for line in inst:
                 i += 1
-                self.institutions.append(line.strip())
+                self.institutions.add(line.strip())
 
         print(self.institutions)
 
@@ -27,8 +24,6 @@ class QuotesSpider(scrapy.Spider):
             request = scrapy.Request(url=institution, callback=self.get_reviews_urls)
             request.meta['file'] = f
             yield request
-            if institution == self.institutions[-1]:
-                self.prepared = True
 
     @staticmethod
     def generate_url(url_type, ins_id, total, pos_neg):

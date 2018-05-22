@@ -12,7 +12,6 @@ class QuotesSpider(scrapy.Spider):
     filename = "urls.txt"
     output_path = "corpus"
 
-    dir_name = 'Водительские комиссии'
     # dir_name = 'Диспансеры врачебно-физкультурные'
     # dir_name = 'Диспансеры кожно-венерологические'
     # dir_name = 'Диспансеры маммологические'
@@ -31,7 +30,7 @@ class QuotesSpider(scrapy.Spider):
     # dir_name = 'Клиники и лечебные центры при медицинских НИИ'
     # dir_name = 'Лечебно-оздоровительные центры'
     # dir_name = 'Лечение за рубежом'
-    # dir_name = 'Медицинские лаборатории, анализы'
+    dir_name = 'Медицинские лаборатории, анализы'
     # dir_name = 'Ортопедические центры, лечение позвоночника и суставов'
     # dir_name = 'Офтальмологические клиники'
     # dir_name = 'Центры пластической хирургии'
@@ -71,6 +70,7 @@ class QuotesSpider(scrapy.Spider):
         html = response.body.decode('windows-1251')
 
         if len(html) == 0:
+            print("\nLIST EMPTY\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n")
             return AttributeError
 
         urls = re.findall('www.spr.ru/forum_vyvod.php\?id_tema=\d+\\\\', html)
@@ -79,7 +79,7 @@ class QuotesSpider(scrapy.Spider):
         for url in urls:
             url = 'https://' + url[:-1]
             # print(url)
-            yield scrapy.Request(url=url, callback=self.parse, errback=self.make_new_request)
+            yield scrapy.Request(url=url, callback=self.parse, errback=self.make_new_request_parse)
 
     def find_between(self, s, first, last):
         try:
@@ -91,6 +91,9 @@ class QuotesSpider(scrapy.Spider):
 
     def parse(self, response):
         html = response.body.decode('windows-1251')
+        if len(html) == 0:
+            print("\nREVIEW EMPTY\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n")
+            return AttributeError
 
         page = response.url.split("=")[-1]
 
@@ -117,6 +120,10 @@ class QuotesSpider(scrapy.Spider):
 
     def make_new_request(self, failure):
         return scrapy.Request(url=failure.request.url, callback=self.get_reviews_urls, errback=self.make_new_request,
+                              dont_filter=True)
+
+    def make_new_request_parse(self, failure):
+        return scrapy.Request(url=failure.request.url, callback=self.parse, errback=self.make_new_request_parse,
                               dont_filter=True)
 
 
