@@ -11,9 +11,7 @@ class QuotesSpider(scrapy.Spider):
 
     def start_requests(self):
         with open('institutions.txt', 'r') as inst:
-            i = 0
             for line in inst:
-                i += 1
                 self.institutions.add(line.strip())
 
         print(self.institutions)

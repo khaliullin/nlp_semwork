@@ -10,6 +10,8 @@ class QuotesSpider(scrapy.Spider):
     name = "direction"
     filename = "institutions.txt"
 
+    direction = 'https://www.spr.ru/all/medtsentri/'
+
     # direction = 'https://www.spr.ru/all/dispanseri-vrachebno-fizkulturnie/'  # Диспансеры врачебно-физкультурные'
     # direction = 'https://www.spr.ru/all/dispanseri-kozhno-venerologicheskie/'  # Диспансеры кожно-венерологические'
     # direction = 'https://www.spr.ru/all/dispanseri-mammologicheskie/'  # Диспансеры маммологические'
@@ -28,7 +30,7 @@ class QuotesSpider(scrapy.Spider):
     # direction = 'https://www.spr.ru/all/kliniki-i-lechebnie-tsentri-pri-meditsinskih-nii/'  # Клиники и лечебные центры при медицинских НИИ'
     # direction = 'https://www.spr.ru/all/lechebno-ozdorovitelnie-tsentri/'  # Лечебно-оздоровительные центры'
     # direction = 'https://www.spr.ru/all/lechenie-za-rubezhom/'  # Лечение за рубежом'
-    direction = 'https://www.spr.ru/all/meditsinskie-laboratorii-analizi/'  # Медицинские лаборатории, анализы'
+    # direction = 'https://www.spr.ru/all/meditsinskie-laboratorii-analizi/'  # Медицинские лаборатории, анализы'
     # direction = 'https://www.spr.ru/all/ortopedicheskie-tsentri-lechenie-pozvonochnika-i/'  # Ортопедические центры, лечение позвоночника и суставов'
     # direction = 'https://www.spr.ru/all/oftalmologicheskie-kliniki/'  # Офтальмологические клиники'
     # direction = 'https://www.spr.ru/all/tsentri-plasticheskoy-hirurgii/'  # Центры пластической хирургии'

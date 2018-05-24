@@ -1,13 +1,10 @@
-import argparse
+import re
 
-# Инициализируем аргументы командной строки
-parser = argparse.ArgumentParser()
-parser.add_argument('--lm', type=str, default="serialized_model",
-                    help="Путь к сериализованной модели")
-parser.add_argument('--src-test-texts', type=str, default="test_collection",
-                    help="Путь к тестовой коллекции")
-args = parser.parse_args()
+f = '/Users/sagithaliullin/student/gitHub/nlp_semwork/spr_crawler/ip.txt'
 
+with open (f, 'r') as file:
+    content = file.read()
 
-# Вызываем функции для выполнения задачи
-
+    m = re.findall('\d+\.\d+\.\d+\.\d+\t\d+', content)
+    for n in m:
+        print('http://' + n)
