@@ -19,7 +19,9 @@ def intersection(a, b):
     c = [value for value in a if value in b]
     return c
 
-test_directory = "../corpus"
+
+test_directory = "/Users/sagithaliullin/student/gitHub/nlp_semwork/corpus_reformated"
+crawled_directory = "/Users/sagithaliullin/student/gitHub/nlp_semwork/spr_crawler/corpus2"
 
 docs_sum = 0
 test_directories_names = []
@@ -33,7 +35,6 @@ for index, dir in enumerate(os.walk(test_directory)):
 
 print("Количество тестовых отзывов:", docs_sum)
 
-crawled_directory = "../spr_crawler/corpus"
 
 docs_sum = 0
 crawled_directories_names = []
@@ -77,31 +78,34 @@ for test_folder in test_folders:
             print('\t' + crawled_review)
 
             crawled_review_path = os.path.join(crawled_directory, crawled_folder, crawled_review)
-            crawled_reader = list(csv.reader(open(crawled_review_path, newline='\n'), delimiter='\n', quotechar='|'))
-            crawled_title = crawled_reader[0][0]
+            print(crawled_review_path)
+            filename = crawled_review_path.split('/')[-1]
+            if filename != ".DS_Store":
+                crawled_reader = list(csv.reader(open(crawled_review_path, newline='\n'), delimiter='\n', quotechar='|'))
+                crawled_title = crawled_reader[0][0]
 
-            crawled_text = ' '.join(str(review) for paragraph in crawled_reader[1:] for review in paragraph)
-            crawled_text = crawled_text[:-17]  # хардкод потому что в конце остается дата
+                crawled_text = ' '.join(str(review) for paragraph in crawled_reader[1:] for review in paragraph)
+                crawled_text = crawled_text[:-17]  # хардкод потому что в конце остается дата
 
-            crawled_result = {"title": crawled_title, "text": crawled_text}
+                crawled_result = {"title": crawled_title, "text": crawled_text}
 
-            # ЦИКЛ ГДЕ ПРОБЕГАЕМСЯ ПО ТЕСТОВЫМ ДОКАМ (ОТ ЕЛЕНЫ)
-            for test_review in test_reviews:
-                test_review_path = os.path.join(test_directory, test_folder, test_review)
-                test_reader = list(csv.reader(open(test_review_path, newline='\n'), delimiter='\n'))
-                test_title = test_reader[0][0]
-                test_text = ' '.join(str(review) for paragraph in test_reader[1:] for review in paragraph)
+                # ЦИКЛ ГДЕ ПРОБЕГАЕМСЯ ПО ТЕСТОВЫМ ДОКАМ
+                for test_review in test_reviews:
+                    test_review_path = os.path.join(test_directory, test_folder, test_review)
+                    test_reader = list(csv.reader(open(test_review_path, newline='\n'), delimiter='\n'))
+                    test_title = test_reader[0][0]
+                    test_text = ' '.join(str(review) for paragraph in test_reader[1:] for review in paragraph)
 
-                if test_text == crawled_text:
-                    matched_sum += 1
-                    break
-                # А вот тут проверочка!!!
+                    if test_text == crawled_text:
+                        matched_sum += 1
+                        break
+                    # А вот тут проверочка!!!
 
-print("НОМЕР СОВПАВШИХ ДОКОВ:", matched_sum)
+print("Количество совпадий: ", matched_sum)
 percent = float(matched_sum) / (test_sum - matched_sum + crawled_sum) * 100
-print("ОБЪЕМ ТЕСТОВЫХ ОТЗЫВОВ", test_sum)
-print("ОБЪЕМ СКРАУЛЕННЫХ ОТЗЫВОВ", crawled_sum)
-print("ПРОЦЕНТ СОВПАДЕНИЯ!!!:::  ", percent, "%")
+print("ОБЪЕМ ТЕСТОВЫХ ОТЗЫВОВ: ", test_sum)
+print("ОБЪЕМ СКРАУЛЕННЫХ ОТЗЫВОВ: ", crawled_sum)
+print("ПРОЦЕНТ СОВПАДЕНИЯ: ", percent, "%")
 
 
 
