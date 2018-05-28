@@ -3,13 +3,15 @@ import re
 import scrapy
 
 
-class QuotesSpider(scrapy.Spider):
+class CatalogueSpider(scrapy.Spider):
     """
-    Returns urls of institutions by given direction url
+    Возвращает список всех поднаправлений в направлении в файле directions.txt
+    catalogue - ссылка на направление
     """
+    catalogue = "https://www.spr.ru/all/medtsentri/"
+
     name = "catalogue"
     filename = "directions.txt"
-    catalogue = "https://www.spr.ru/all/medtsentri/"
 
     def start_requests(self):
         f = open(self.filename, 'w')
@@ -22,6 +24,7 @@ class QuotesSpider(scrapy.Spider):
         f = response.meta['file']
 
         html = response.body.decode('windows-1251')
+        # ищем ссылку на поднаправления
         matches = re.findall("(a href='//www.spr.ru/all/.+?' title='.*?')", html)
 
         for match in matches[:-1]:
